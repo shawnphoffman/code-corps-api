@@ -21,8 +21,10 @@
 #  photo_content_type    :string
 #  photo_file_size       :integer
 #  photo_updated_at      :datetime
-#  name                  :text
 #  aasm_state            :string           default("signed_up"), not null
+#  theme                 :string           default("light"), not null
+#  first_name            :string
+#  last_name             :string
 #
 
 require "rails_helper"
@@ -32,10 +34,11 @@ describe UserSerializer, type: :serializer do
     let(:resource) do
       user = create(:user,
                     email: "user@mail.com",
-                    name: "Josh Smith",
+                    first_name: "Josh",
+                    last_name: "Smith",
                     username: "joshsmith",
                     website: "example.com",
-                    twitter: "@user",
+                    twitter: "user",
                     biography: "Lorem ipsum",
                     facebook_id: "some_id",
                     facebook_access_token: "some_token")
@@ -90,6 +93,16 @@ describe UserSerializer, type: :serializer do
         expect(subject["username"]).to_not be_nil
       end
 
+      it "has a 'first_name'" do
+        expect(subject["first_name"]).to eq resource.first_name
+        expect(subject["first_name"]).to_not be_nil
+      end
+
+      it "has a 'last_name'" do
+        expect(subject["last_name"]).to eq resource.last_name
+        expect(subject["last_name"]).to_not be_nil
+      end
+
       it "has a 'name'" do
         expect(subject["name"]).to eq resource.name
         expect(subject["name"]).to_not be_nil
@@ -123,6 +136,11 @@ describe UserSerializer, type: :serializer do
       it "has a 'state'" do
         expect(subject["state"]).to eq resource.state
         expect(subject["state"]).to_not be_nil
+      end
+
+      it "has a 'theme'" do
+        expect(subject["theme"]).to eq resource.theme
+        expect(subject["theme"]).to_not be_nil
       end
 
       context "when not the current user" do

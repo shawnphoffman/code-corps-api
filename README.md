@@ -17,6 +17,8 @@ We'd love to have you contribute to Code Corps directly!
 
 To do so, please read the guidelines in our [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
+Then head over to [Code Corps](https://codecorps.org), where we manage contributions.
+
 ## Developer installation guide
 
 ### Install Rails, PostgreSQL, Redis, and ElasticSearch
@@ -34,6 +36,9 @@ We need to install the Ruby on Rails framework, the PostgreSQL database, and the
 4. Install ElasticSearch
    * On Mac, run `brew install elasticsearch`
    * Or for Linux or Windows, consult the [setup guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html)
+5. Install ImageMagik
+   * On Mac, run `brew install imagemagick`
+   * Or for Linux or Windows, consult the [guide](http://www.imagemagick.org/script/binary-releases.php)
 
 ### Clone this git repository
 

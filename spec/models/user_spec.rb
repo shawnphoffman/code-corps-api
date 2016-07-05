@@ -21,8 +21,10 @@
 #  photo_content_type    :string
 #  photo_file_size       :integer
 #  photo_updated_at      :datetime
-#  name                  :text
 #  aasm_state            :string           default("signed_up"), not null
+#  theme                 :string           default("light"), not null
+#  first_name            :string
+#  last_name             :string
 #
 
 require "rails_helper"
@@ -36,7 +38,8 @@ describe User, type: :model do
     it { should have_db_column(:remember_token).of_type(:string).with_options(limit: 128, null: false) }
     it { should have_db_column(:admin).of_type(:boolean).with_options(null: false, default: false) }
     it { should have_db_column(:twitter).of_type(:string) }
-    it { should have_db_column(:name).of_type(:text) }
+    it { should have_db_column(:first_name).of_type(:text) }
+    it { should have_db_column(:last_name).of_type(:text) }
     it { should have_db_column(:website).of_type(:text) }
     it { should have_db_column(:biography).of_type(:text) }
     it { should have_db_column(:facebook_id).of_type(:string) }
@@ -46,6 +49,7 @@ describe User, type: :model do
     it { should have_db_column(:photo_file_size).of_type(:integer) }
     it { should have_db_column(:photo_updated_at).of_type(:datetime) }
     it { should have_db_column(:aasm_state).of_type(:string).with_options(default: "signed_up", null: false) }
+    it { should have_db_column(:theme).of_type(:string).with_options(default: "light", null: false) }
 
     it { should have_db_index(:email) }
     it { should have_db_index(:remember_token) }
@@ -121,6 +125,14 @@ describe User, type: :model do
       it { should_not allow_value("singleword").for(:website) }
     end
 
+    describe "name" do
+      let(:user) { User.create(first_name: "Josh", last_name: "Smith") }
+
+      it "should combine the first and last name" do
+        expect(user.name).to eq "Josh Smith"
+      end
+    end
+
     describe "username" do
       let(:user) { User.create(email: "joshdotsmith@gmail.com", username: "joshsmith", password: "password") }
 
@@ -162,7 +174,21 @@ describe User, type: :model do
             ) }
         end
       end
+
+      describe "twitter username validation" do
+        context "when username has an '@' symbol" do
+          it "returns an error" do
+            should_not allow_value("@codecorps").for(:twitter).with_message(
+              "contains an invalid character"
+            )
+          end
+        end
+      end
     end
+  end
+
+  describe "behavior" do
+    it { should define_enum_for(:theme).with(light: "light", dark: "dark") }
   end
 
   describe "strip_attributes" do
@@ -263,7 +289,7 @@ describe User, type: :model do
       }
     end
 
-    context "with cloudfront" do
+    context "with cloudfront", local_skip: true do
       let(:user) { create(:user, :with_s3_photo) }
 
       it "should have our cloudfront domain in the URL" do

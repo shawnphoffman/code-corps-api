@@ -2,24 +2,28 @@
 #
 # Table name: projects
 #
-#  id                :integer          not null, primary key
-#  title             :string           not null
-#  description       :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  icon_file_name    :string
-#  icon_content_type :string
-#  icon_file_size    :integer
-#  icon_updated_at   :datetime
-#  base64_icon_data  :text
-#  slug              :string           not null
-#  organization_id   :integer          not null
-#  aasm_state        :string
+#  id                        :integer          not null, primary key
+#  title                     :string           not null
+#  description               :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  icon_file_name            :string
+#  icon_content_type         :string
+#  icon_file_size            :integer
+#  icon_updated_at           :datetime
+#  base64_icon_data          :text
+#  slug                      :string           not null
+#  organization_id           :integer          not null
+#  aasm_state                :string
+#  long_description_body     :text
+#  long_description_markdown :text
+#  open_posts_count          :integer          default(0), not null
+#  closed_posts_count        :integer          default(0), not null
 #
 
 require "rails_helper"
 
-describe Project, type: :model do
+describe Project, type: :model, local_skip: true do
   describe "schema" do
     it { should have_db_column(:title).of_type(:string).with_options(null: false) }
     it { should have_db_column(:description).of_type(:string) }

@@ -19,6 +19,7 @@ require "pundit/rspec"
 require "aasm/rspec"
 require "database_cleaner"
 require "strip_attributes/matchers"
+require "webmock/rspec"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -45,6 +46,11 @@ VCR.configure do |config|
 end
 
 RSpec.configure do |config|
+  unless ENV["CI_BUILD_WITH_ENV"]
+    RSpec.configure do |c|
+      c.filter_run_excluding local_skip: true
+    end
+  end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -86,10 +92,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
-  end
-
-  config.before(:each) do
-    allow_any_instance_of(Paperclip::Attachment).to receive(:save).and_return(true)
   end
 
   Shoulda::Matchers.configure do |shoulda|
