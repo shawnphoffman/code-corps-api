@@ -27,7 +27,7 @@
 #  last_name             :string
 #
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   ASSET_HOST_FOR_DEFAULT_PHOTO = "https://d3pgew4wbk2vb1.cloudfront.net/icons".freeze
 
   include AASM
@@ -102,6 +102,7 @@ class User < ActiveRecord::Base
                                 allow_blank: true,
                                 message: "contains an invalid character"
 
+  before_save :add_url_protocol, if: :website?
   before_save :attempt_transition
   after_save :create_or_update_slugged_route
 
@@ -171,6 +172,12 @@ class User < ActiveRecord::Base
   end
 
   private
+
+    def add_url_protocol
+      unless website[%r{^http?://}] || website[%r{^https?://}]
+        self.website = "http://#{website}"
+      end
+    end
 
     def can_transition
       return if state_transition.blank?

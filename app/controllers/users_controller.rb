@@ -39,9 +39,7 @@ class UsersController < ApplicationController
   def index
     authorize User
 
-    users = User.includes(
-      :categories, :organizations, :roles, skills: :roles
-    ).find(id_params)
+    users = User.find(id_params)
 
     render json: users
   end
@@ -55,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.includes(skills: :roles).find(params[:id])
+    user = User.find(params[:id])
 
     authorize user
     render json: user, include: ["skills"]
@@ -198,6 +196,7 @@ class UsersController < ApplicationController
       if user.save
         analytics_for(user).track_signed_up_with_facebook
         AddFacebookFriendsWorker.perform_async(user.id)
+        SubscribeToMailingListWorker.perform_async(user.id)
         if photo_param?
           UpdateProfilePictureWorker.perform_async(user.id)
         else
@@ -215,6 +214,7 @@ class UsersController < ApplicationController
 
       if user.save
         analytics_for(user).track_signed_up_with_email
+        SubscribeToMailingListWorker.perform_async(user.id)
         if photo_param?
           UpdateProfilePictureWorker.perform_async(user.id)
         else
