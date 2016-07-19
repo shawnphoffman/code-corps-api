@@ -141,6 +141,84 @@ Exchange credentials for `access_token`.
 
 # Group Posts
 
+## Post [/posts]
+
+### Create a post [POST]
+
++ Request
+  + Attributes (OAuth Grant Request)
+
++ Headers
+
+  Authorization: Basic 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+
++ Response 201 (application/vnd.api+json)
+
+  + Attributes (Post Response)
+
++ Response 422 (application/vnd.api+json)
+
+  + Attributes (Unprocessable Entity Response)
+
+## Post [/posts/{id}/comments]
+
++ Parameters
+
+  + id: 1 (number, required)
+
+### Retrieve a post [GET]
+
++ Request
+  + Attributes (OAuth Grant Request)
+
++ Headers
+
+  Authorization: Basic 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+
++ Response 200 (application/vnd.api+json)
+
+  + Attributes (Post Response)
+
++ Response 404 (application/vnd.api+json)
+
+  + Attributes (Record Not Found Response)
+
+## POST [/posts/{id}]
+
++ Parameters
+
+  +  id: 1 (number, required)
+
+### Update a post [PUT]
+
++ Headers
+
+  Authorization: Basic 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+
++ Response 204 (application/vnd.api+json)
+
+  + Attributes (No Content Response)
+
++ Response 404 (application/vnd.api+json)
+
+  + Attributes (Record Not Found Response)
+
++ Response 409 (application/vnd.api+json)
+
+  + Attributes (Creation Conflict Response)
+
+## POST COLLECTION [/posts]
+
+### List all posts [GET]
+
++ Headers
+
+  Authorization: Basic 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+
++ Response 200 (application/vnd.api+json)
+
+  + Attributes (Posts Response)
+
 # Group Preview User Mentions
 
 # Group Previews
