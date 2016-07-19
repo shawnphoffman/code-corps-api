@@ -115,6 +115,18 @@ Exchange credentials for `access_token`.
 
 # Group Comment Images
 
+## Comment Image [/comment_images]
+
+### Create a Comment Image [POST]
++ Request
+  + Attributes (OAuth Grant Request)
++ Headers
+  Authorization: Basic 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
++ Response 201 (application/vnd.api+json)
+  + Attributes (Comment Image Response)
++ Response 422 (application/vnd.api+json)
+  + Attributes (Unprocessable Entity Response)
+
 # Group Comment User Mentions
 
 # Group Comments
@@ -225,6 +237,28 @@ Exchange credentials for `access_token`.
 + categories
   + data(array[Category], required)
 
+## Comment Image (object)
++ filename: `file name` (string)
+
+## Comment Image Relationships Base (object)
++ comment
+  + data(array[Comments Relationship])
++ user
+  + data(array[Users Relationship])
+
+## Comment Image Response Base (object)
++ id: `1` (string)
++ type: `comment_images` (string)
++ attributes(Comment Image)
++ relationships(Comment Image Relationships Base)
+
+## Comment Image Response (object)
++ data(Comment Image Response Base)
+
+## Comments Relationship (object)
++ id: 1 (string)
++ type: comments (string)
+
 ## Creation Conflict Response (object)
 + title: `Conflict` (string)
 
@@ -330,3 +364,7 @@ Exchange credentials for `access_token`.
 ## User Skills Relationships (object)
 + user_skills
   + data(array[User Skills Relationship], required)
+
+## Users Relationship (object)
++ id: 1 (string)
++ type: users (string)
